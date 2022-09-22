@@ -1,6 +1,3 @@
 # backend-study-course
 
-# Made by honghyeong
-
-- test
-- test 1
+- Made by honghyeong
