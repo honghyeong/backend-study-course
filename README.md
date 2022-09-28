@@ -3,3 +3,5 @@
 - Made by honghyeong
 
 - 수업 자료는 pdf-resource에 있습니다.
+
+- 각 수업 회차 내용은 PR에서 다루겠습니다. 
