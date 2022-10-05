@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserParams, UpdateUserParams } from './users.param';
 
 @Injectable()
 export class UsersService {
@@ -37,7 +38,7 @@ export class UsersService {
     return fetchUsers;
   }
 
-  createUser(newUser: CreateUserDto) {
+  createUser(newUser: CreateUserParams) {
     this.users.push(newUser);
     console.log(this.users);
     return true;
@@ -56,7 +57,7 @@ export class UsersService {
     return true;
   }
 
-  updateUser(id: number, updateInfo: { age: number; role: number }) {
+  updateUser(id: number, updateUserDto: UpdateUserParams) {
     const updatedUsers = [];
     console.log(this.users);
     this.users.forEach((user) => {
@@ -64,8 +65,8 @@ export class UsersService {
         updatedUsers.push({
           id: user.id,
           name: user.name,
-          age: updateInfo.age,
-          role: updateInfo.role,
+          age: updateUserDto.age,
+          role: updateUserDto.role,
         });
       } else {
         updatedUsers.push(user);
