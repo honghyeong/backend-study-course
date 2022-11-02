@@ -1,6 +1,6 @@
 version: '3'
 services:
-  dev-db:
+  backend-db:
     image: postgres
     ports:
       - '5432:5432'

@@ -10,8 +10,8 @@ import {
   Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './users.dto';
+import { UpdateUserDto } from './users.dto';
 
 @Controller('users')
 export class UsersController {
@@ -21,13 +21,13 @@ export class UsersController {
   fetchUsers() {
     return this.usersService.fetchUsers();
   }
-  @Get('/query')
-  fetchUsersByQuery(
-    @Query('offset') offset: number,
-    @Query('limit') limit: number,
-  ) {
-    return this.usersService.fetchUsersByQuery(offset, limit);
-  }
+  // @Get('/query')
+  // fetchUsersByQuery(
+  //   @Query('offset') offset: number,
+  //   @Query('limit') limit: number,
+  // ) {
+  //   return this.usersService.fetchUsersByQuery(offset, limit);
+  // }
 
   @Get('/:id')
   fetchUser(@Param('id') id: number) {
@@ -40,15 +40,12 @@ export class UsersController {
   }
 
   @Delete('/:id')
-  deleteUser(@Param('id') id: number): boolean {
+  deleteUser(@Param('id') id: number) {
     return this.usersService.deleteUser(id);
   }
 
   @Put('/:id')
-  updateUser(
-    @Param('id') id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ): boolean {
+  updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updateUser(id, updateUserDto);
   }
 }
