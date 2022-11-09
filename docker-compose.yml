@@ -8,3 +8,5 @@ services:
       - POSTGRES_USER=backend
       - POSTGRES_PASSWORD=backend
       - POSTGRES_DB=backend
+
+  
