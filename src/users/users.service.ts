@@ -1,80 +1,48 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './users.entity';
 import { CreateUserParams, UpdateUserParams } from './users.param';
 
 @Injectable()
 export class UsersService {
-  users = [
-    { id: 0, name: 'seokmin', age: 26, role: 0 },
-    { id: 1, name: 'youhyeok', age: 40, role: 1 },
-    { id: 2, name: 'yeondon', age: 40, role: 1 },
-    { id: 3, name: 'hanjoo', age: 24, role: 0 },
-    { id: 4, name: 'sangyup', age: 24, role: 0 },
-    { id: 5, name: 'seokwon', age: 24, role: 0 },
-  ];
+  constructor(
+    @InjectRepository(User) private usersRepositry: Repository<User>,
+  ) {}
 
-  fetchUsers() {
-    return this.users;
+  async fetchUsers() {
+    return this.usersRepositry.find();
   }
 
-  fetchUser(id: number) {
-    let findUser;
-    this.users.forEach((user) => {
-      if (user.id == id) {
-        findUser = user;
-      }
+  async fetchUser(id: number) {
+    return this.usersRepositry.findOne(id);
+  }
+
+  // fetchUsersByQuery(offset, limit) {
+  //   const os = parseInt(offset);
+  //   const li = parseInt(limit);
+  //   const fetchUsers = [];
+  //   for (let i = os; i < os + li; i++) {
+  //     fetchUsers.push(this.users[i]);
+  //   }
+  //   return fetchUsers;
+  // }
+
+  async createUser(newUser: CreateUserParams) {
+    this.usersRepositry.save(newUser);
+    return newUser;
+  }
+
+  async deleteUser(id: number) {
+    const deletedUser = await this.usersRepositry.delete(id);
+    return deletedUser;
+  }
+
+  async updateUser(id: number, updateUserDto: UpdateUserParams) {
+    const updatedUser = this.usersRepositry.update(id, {
+      role: updateUserDto.role,
+      age: updateUserDto.age,
     });
-
-    return findUser;
-  }
-
-  fetchUsersByQuery(offset, limit) {
-    const os = parseInt(offset);
-    const li = parseInt(limit);
-    const fetchUsers = [];
-    for (let i = os; i < os + li; i++) {
-      fetchUsers.push(this.users[i]);
-    }
-    return fetchUsers;
-  }
-
-  createUser(newUser: CreateUserParams) {
-    this.users.push(newUser);
-    console.log(this.users);
-    return true;
-  }
-
-  deleteUser(id: number) {
-    console.log(this.users);
-    const filteredUsers = this.users.filter((user) => {
-      if (user.id != id) {
-        return user;
-      }
-    });
-
-    this.users = filteredUsers;
-    console.log(this.users);
-    return true;
-  }
-
-  updateUser(id: number, updateUserDto: UpdateUserParams) {
-    const updatedUsers = [];
-    console.log(this.users);
-    this.users.forEach((user) => {
-      if (user.id == id) {
-        updatedUsers.push({
-          id: user.id,
-          name: user.name,
-          age: updateUserDto.age,
-          role: updateUserDto.role,
-        });
-      } else {
-        updatedUsers.push(user);
-      }
-    });
-
-    this.users = updatedUsers;
-    console.log(this.users);
-    return true;
+    return updatedUser;
   }
 }

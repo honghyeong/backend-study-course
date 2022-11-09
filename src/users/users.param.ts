@@ -1,11 +1,12 @@
+import { Role } from './users.enum';
+
 export interface CreateUserParams {
-  id: number;
   name: string;
   age: number;
-  role: number;
+  role: Role;
 }
 
 export interface UpdateUserParams {
-  role: number;
+  role: Role;
   age: number;
 }
